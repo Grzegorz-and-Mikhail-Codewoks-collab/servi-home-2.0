@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_TEST_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  username  String
+  createdAt DateTime @default(now())
+  addresses Address[]
+  bookings  Booking[]
+}
+
+model Cleaner {
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+  bookings  Booking[] 
+}
+
+model Address {
+  id      String   @id @default(uuid())
+  detail  String   // Full address details
+  latitude Float?   @default(0)
+  longitude Float?  @default(0)
+  userId  String
+  user    User     @relation(fields: [userId], references: [id])
+  bookings Booking[]
+}
+
+model Service {
+  id          String  @id @default(uuid())
+  type        String  // e.g., "Furniture", "Rug", "Table"
+  description String
+  imageUrl    String?  
+  booking     Booking  @relation(fields: [bookingId], references: [id])
+  bookingId   String
+}
+
+model Booking {
+  id         String         @id @default(uuid())
+  userId     String
+  user       User           @relation(fields: [userId], references: [id])
+  cleanerId  String?
+  cleaner    Cleaner?       @relation(fields: [cleanerId], references: [id])
+  addressId  String
+  address    Address        @relation(fields: [addressId], references: [id])
+  services   Service[]  
+  status     BookingStatus  @default(PENDING)
+  createdAt  DateTime       @default(now())
+}
+
+enum BookingStatus {
+  PENDING
+  ACCEPTED
+  DECLINED
+}
+
+
+
+model Review {
+  id      String @id @default(uuid())
+  title   String
+  name    String
+  content String
+  createdAt DateTime @default(now())
+}

@@ -1,0 +1,30 @@
+.upperimage {
+  position: absolute;
+  top: -26%;
+  left: 66.8%;
+  transform-origin: center bottom;
+  background-size: cover;
+  animation: wipe-animation 2s infinite alternate; /* Set animation duration and type */
+}
+.image {
+  position: relative;
+
+  width: 50vw;
+
+  /* width: 50vw; */
+  height: auto;
+  object-fit: cover;
+}
+
+.customcursor:hover {
+  cursor: url('/cleanerhand.png'), auto;
+}
+
+@keyframes wipe-animation {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(0.8);
+  }
+  100% {
+    transform: translateY(0%) rotate(-21deg) scale(0.8); /* Adjust the rotation angle as needed */
+  }
+}
